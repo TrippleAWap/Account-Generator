@@ -7,3 +7,5 @@
 * Open a command prompt inside of the folder.
 * Inside of the terminal run `npm i` then run `npm run start`
 * ENJOY THE EPIC ACCOUNTS
+
+# EXPECT AN UPDATE SOON ( reworking the whole page detection system because titles are region specific. )

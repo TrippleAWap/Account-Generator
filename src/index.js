@@ -1,7 +1,6 @@
 // asyncronous entry point
 (async () => {
     const fs = require("fs");
-    const writeStream = fs.createWriteStream(`${__dirname}/../accounts.txt`, { flags: "a" })
     const electron = require("electron");
     electron.app.on("ready", async () => {
         const mainWindow = new electron.BrowserWindow({
@@ -20,6 +19,7 @@
         // gonna remake cause titles are region specific and I don't want to deal with that
         mainWindow.webContents.on("page-title-updated", async (_, title) => {
             const url = mainWindow.webContents.getURL();
+            console.log(title, url, "\n\n")
             switch (title) {
                 case "Xbox Official Site: Consoles, Games, and Community | Xbox":
                     mainWindow.loadURL("https://www.xbox.com/en-CA/auth/msa?action=logIn&returnUrl=https%3A%2F%2Fwww.xbox.com%2Fen-CA%2F")
@@ -58,6 +58,7 @@
                     }).join("");
                     console.log(`Created password: ${password}`)
                     currentAccount.password = password;
+                    await new Promise((r) => setTimeout(r, 500));
                     mainWindow.webContents.executeJavaScript(`document.querySelector("input[type=password]").value = "${password}";`);
                     mainWindow.webContents.executeJavaScript(`document.querySelector("input[type=password]").dispatchEvent(new Event("input"));`);
                     mainWindow.webContents.executeJavaScript(`document.querySelector("input[type=submit]").click();`);
@@ -86,15 +87,13 @@
                 case "Add security info":
                     console.log(`Awaiting captcha completion for ${currentAccount.email}`);
                     break;
-                case "Continue":
-                    console.log(url)
-                    writeStream.write(`${currentAccount.email}:${currentAccount.password}\n`);
-                    console.log(`Account created: ${currentAccount.email}:${currentAccount.password}`);
-                    break;
                 case "Microsoft account notice":
                     mainWindow.webContents.executeJavaScript(`document.querySelector("#StickyFooter > button").click();`);
                     break;
                 case "Welcome to Xbox":
+                    fs.appendFileSync(__dirname + "/../accounts.txt", `${currentAccount.email}:${currentAccount.password}\n`);
+                    console.log(`Account created: ${currentAccount.email}:${currentAccount.password}`);
+                    await new Promise((r) => setTimeout(r, 2000));
                     mainWindow.webContents.executeJavaScript(`document.querySelector("#create-account-gamertag-suggestion-1").click();`);
                     await new Promise((r) => setTimeout(r, 2000));
                     mainWindow.webContents.executeJavaScript(`document.querySelector("#inline-continue-control").click();`);

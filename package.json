@@ -4,7 +4,8 @@
   "description": "A simple Xbox account generator made in NodeJS.",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron ./src/index.js"
+    "start": "electron ./src/index.js",
+    "debug": "electron --trace-warnings --unhandled-rejections=strict ./src/index.js"
   },
   "keywords": [
     "generator",

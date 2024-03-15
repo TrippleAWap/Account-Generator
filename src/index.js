@@ -14,9 +14,10 @@
             }
         });
 
-        // page which redirects to the login page/
+        // page which redirects to the login page
         mainWindow.loadURL("https://www.xbox.com/en-CA/auth/msa?action=logIn&returnUrl=https%3A%2F%2Fwww.xbox.com%2Fen-CA%2F")
         let currentAccount = { email: "", password: "" };
+        // gonna remake cause titles are region specific and I don't want to deal with that
         mainWindow.webContents.on("page-title-updated", async (_, title) => {
             const url = mainWindow.webContents.getURL();
             switch (title) {
@@ -61,6 +62,7 @@
                     mainWindow.webContents.executeJavaScript(`document.querySelector("input[type=password]").dispatchEvent(new Event("input"));`);
                     mainWindow.webContents.executeJavaScript(`document.querySelector("input[type=submit]").click();`);
                     break;
+                case `What's your name?`: 
                 case `What\u2019s your name?`: // they have a weird apostrophe
                     mainWindow.webContents.executeJavaScript(`document.querySelector("#FirstName").value = "Judge";`);
                     mainWindow.webContents.executeJavaScript(`document.querySelector("#FirstName").dispatchEvent(new Event("input"));`);
@@ -69,6 +71,9 @@
 
                     mainWindow.webContents.executeJavaScript(`document.querySelector("input[type=submit]").click();`);
                     break;
+                case `What's your birthdate?`:
+                case `What\u2019s birthdate?`:
+                case `What's your date of birth?`:
                 case `What\u2019s your date of birth?`: // they have a weird apostrophe
                     mainWindow.webContents.executeJavaScript(`document.querySelector("#BirthMonth").value = "${Math.max(1, Math.floor(Math.random() * 12))}";`);
                     mainWindow.webContents.executeJavaScript(`document.querySelector("#BirthMonth").dispatchEvent(new Event("change"));`);

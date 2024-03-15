@@ -12,7 +12,6 @@
                 partition: "persist:main",
             }
         });
-
         // page which redirects to the login page
         mainWindow.loadURL("https://www.xbox.com/en-CA/auth/msa?action=logIn&returnUrl=https%3A%2F%2Fwww.xbox.com%2Fen-CA%2F")
         let currentAccount = { email: "", password: "" };

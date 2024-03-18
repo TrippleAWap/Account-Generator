@@ -53,7 +53,7 @@ const electron = require("electron");
                     }).join("");
                     console.log(`Created password: ${password}`)
                     currentAccount.password = password;
-                    await new Promise((r) => setTimeout(r, 500));
+                    await new Promise((r) => setTimeout(r, 1000));
                     mainWindow.webContents.executeJavaScript(`document.querySelector("input[type=password]").value = "${password}";`);
                     mainWindow.webContents.executeJavaScript(`document.querySelector("input[type=password]").dispatchEvent(new Event("input"));`);
                     await new Promise((r) => setTimeout(r, 50));
